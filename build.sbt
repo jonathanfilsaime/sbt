@@ -5,7 +5,7 @@ version := "0.1"
 scalaVersion := "2.11.8"
 
 // Spark Information
-val sparkVersion = "2.1.0"
+val sparkVersion = "2.2.1"
 
 resolvers ++= Seq(
   "apache-snapshots" at "http://repository.apache.org/snapshots/"
