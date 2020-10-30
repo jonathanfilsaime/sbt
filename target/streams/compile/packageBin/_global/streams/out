@@ -1,0 +1,45 @@
+[debug] Packaging C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\sbt_2.11-0.1.jar ...
+[debug] Input file mappings:
+[debug] 	PageRank$$anonfun$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$1.class
+[debug] 	PageRank$$anonfun$2.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$2.class
+[debug] 	PageRank$$anonfun$3.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$3.class
+[debug] 	PageRank$$anonfun$4.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$4.class
+[debug] 	PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$1.class
+[debug] 	PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$2.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$2.class
+[debug] 	PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$3$$anonfun$apply$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$3$$anonfun$apply$1.class
+[debug] 	PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$3.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$main$1$$anonfun$apply$mcVI$sp$3.class
+[debug] 	PageRank$$anonfun$main$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$$anonfun$main$1.class
+[debug] 	PageRank$.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank$.class
+[debug] 	PageRank.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\PageRank.class
+[debug] 	Tweets$$anonfun$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$anonfun$1.class
+[debug] 	Tweets$$anonfun$2.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$anonfun$2.class
+[debug] 	Tweets$$anonfun$3.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$anonfun$3.class
+[debug] 	Tweets$$anonfun$4.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$anonfun$4.class
+[debug] 	Tweets$$anonfun$5.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$anonfun$5.class
+[debug] 	Tweets$$typecreator1$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$typecreator1$1.class
+[debug] 	Tweets$$typecreator2$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$typecreator2$1.class
+[debug] 	Tweets$$typecreator3$1.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$$typecreator3$1.class
+[debug] 	Tweets$.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets$.class
+[debug] 	Tweets.class
+[debug] 	  C:\Users\j1liv\Desktop\projects\sbt\target\scala-2.11\classes\Tweets.class
+[debug] Done packaging.
