@@ -1,14 +1,12 @@
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.ml.linalg.Vector
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
 import org.apache.spark.ml.feature.{HashingTF, StopWordsRemover, StringIndexer, StringIndexerModel, Tokenizer}
 import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, Row, SparkSession}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object Hello {
-
 
   def main(args: Array[String]) = {
 
@@ -68,7 +66,7 @@ object Hello {
       .setNumFolds(2)
 
     //fit the pipeline to training documents.
-    val model = cv.fit(twitterDataFrameIndexed)
+    val model = pipeline.fit(twitterDataFrameIndexed)
 
     //test data selection 20%
     val trainCleanData = cleanData.take(trainingPercent)
@@ -78,23 +76,12 @@ object Hello {
     val twitterTestDataFrame = spark.createDataFrame(testData).toDF("id", "text", "stringLabel")
     println("number of test data rows: " + twitterTestDataFrame.count())
 
-    //for verification and accuracy
-    val indexerTest = new StringIndexer()
-      .setInputCol("stringLabel")
-      .setOutputCol("label")
-      .fit(twitterDataFrame)
-    val twitterDataFrameTestIndexed = StringToNumberIndexer(twitterTestDataFrame)
-
-
     val twitterTestWithoutLabelDataFrame = spark.createDataFrame(cleanDataWithoutLabel).toDF("id", "text")
     println("number of test data rows: " + twitterTestWithoutLabelDataFrame.count())
 
     val prediction = model.transform(twitterTestWithoutLabelDataFrame)
-      .select("id", "text", "probability", "prediction")
-      .collect()
-      .foreach { case Row(id: Long, text: String, prob: Vector, prediction: Double) =>
-        println(s"($id, $text) --> prob=$prob, prediction=$prediction")
-      }
+
+    prediction.rdd.saveAsTextFile("./prediction")
 
   }
 
