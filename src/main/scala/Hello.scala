@@ -1,8 +1,11 @@
 import org.apache.spark.ml.Pipeline
+import org.apache.spark.ml.linalg.Vector
 import org.apache.spark.ml.classification.LogisticRegression
-import org.apache.spark.ml.feature.{HashingTF, StopWordsRemover, StringIndexer, Tokenizer}
+import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
+import org.apache.spark.ml.feature.{HashingTF, StopWordsRemover, StringIndexer, StringIndexerModel, Tokenizer}
+import org.apache.spark.ml.tuning.{CrossValidator, ParamGridBuilder}
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
 object Hello {
 
@@ -23,34 +26,18 @@ object Hello {
 
     val cleanData = dataCleanUp(tweetCSV)
 
-//    val tempData = spark.createDataFrame(cleanData).toDF("id", "text", "label")
-
-//    val indexer = new StringIndexer()
-//      .setInputCol("label")
-//      .setOutputCol("numericLabel")
-//      .fit(tempData)
-//    val cleanDataIndexed = indexer.transform(tempData)
-    //    val cleanDataIndexedRDD = cleanData.rdd.map(x => (x.get(1), x.get(2), x.get(3), x.get(4))
-
-//    cleanData.foreach(x => println("-------> " + x))
-
     val num = cleanData.count()
     println("number of total rows: " + num)
 
     val trainingPercent = (num * .8).toInt
     println(trainingPercent)
 
-
-
     //training data selection 80%
     val twitterDataFrame = spark.createDataFrame(cleanData.take(trainingPercent)).toDF("id", "text", "stringLabel")
     println("number of training data rows: " + twitterDataFrame.count())
 
-    val indexer = new StringIndexer()
-      .setInputCol("stringLabel")
-      .setOutputCol("label")
-      .fit(twitterDataFrame)
-    val twitterDataFrameIndexed = indexer.transform(twitterDataFrame)
+    //transforming string label to number
+    val twitterDataFrameIndexed = StringToNumberIndexer(twitterDataFrame)
 
     //Configure an ML pipeline, which consists of four stages: tokenizer, StopWordsRemover, hashingTF, and lr.
     val tokenizer = new Tokenizer()
@@ -69,25 +56,34 @@ object Hello {
     val pipeline = new Pipeline()
       .setStages(Array(tokenizer, remover, hashingTF, lr))
 
+    val paramGrid = new ParamGridBuilder()
+      .addGrid(hashingTF.numFeatures, Array(10, 100, 1000))
+      .addGrid(lr.regParam, Array(0.1, 0.01))
+      .build()
+
+    val cv = new CrossValidator()
+      .setEstimator(pipeline)
+      .setEvaluator(new BinaryClassificationEvaluator)
+      .setEstimatorParamMaps(paramGrid)
+      .setNumFolds(2)
+
     //fit the pipeline to training documents.
-    val model = pipeline.fit(twitterDataFrameIndexed)
+    val model = cv.fit(twitterDataFrameIndexed)
 
     //test data selection 20%
     val trainCleanData = cleanData.take(trainingPercent)
     val testData = cleanData.filter( x => !trainCleanData.contains(x))
     val cleanDataWithoutLabel = testData.map(x => (x._1, x._2))
 
-
-
     val twitterTestDataFrame = spark.createDataFrame(testData).toDF("id", "text", "stringLabel")
     println("number of test data rows: " + twitterTestDataFrame.count())
 
-    //for verifaction and accuracy
+    //for verification and accuracy
     val indexerTest = new StringIndexer()
       .setInputCol("stringLabel")
       .setOutputCol("label")
       .fit(twitterDataFrame)
-    val twitterDataFrameTestIndexed = indexer.transform(twitterTestDataFrame)
+    val twitterDataFrameTestIndexed = StringToNumberIndexer(twitterTestDataFrame)
 
 
     val twitterTestWithoutLabelDataFrame = spark.createDataFrame(cleanDataWithoutLabel).toDF("id", "text")
@@ -96,9 +92,18 @@ object Hello {
     val prediction = model.transform(twitterTestWithoutLabelDataFrame)
       .select("id", "text", "probability", "prediction")
       .collect()
+      .foreach { case Row(id: Long, text: String, prob: Vector, prediction: Double) =>
+        println(s"($id, $text) --> prob=$prob, prediction=$prediction")
+      }
 
-    //print prediction
-    prediction.foreach(println)
+  }
+
+  private def StringToNumberIndexer(twitterDataFrame: DataFrame) = {
+    val indexer = new StringIndexer()
+      .setInputCol("stringLabel")
+      .setOutputCol("label")
+      .fit(twitterDataFrame)
+    indexer.transform(twitterDataFrame)
   }
 
   private def dataCleanUp(tweetCSV: RDD[String]) = {
